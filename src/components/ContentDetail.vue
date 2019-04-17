@@ -23,7 +23,7 @@
         {{context}}
       </div>
       <div class="content-detail-button">
-        <b-button variant="primary">수정</b-button>
+        <b-button variant="primary" @click="updateData">수정</b-button>
         <b-button variant="success" @click="deleteData">삭제</b-button>
       </div>
       <div class="content-detail-comment">
@@ -56,6 +56,11 @@ export default {
       data.Content.splice(content_index, 1)
       this.$router.push({
         path: '/board/free'
+      })
+    },
+    updateData() {
+      this.$router.push({
+        path: `/board/free/create/${this.contentId}`
       })
     }
   }
