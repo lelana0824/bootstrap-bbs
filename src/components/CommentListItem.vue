@@ -1,48 +1,26 @@
 <template>
   <div>
-    <template v-if="subCommentList.length === 0">
-      <div class="comment-list-item">
-        <div class="comment-list-item-name">
-          <div>{{name}}</div>
-          <div>{{commentObj.created_at}}</div>
-        </div>
-        <div class="comment-list-item-context">{{commentObj.context}}</div>
-        <div class="comment-list-item-button">
-          <b-button variant="info">수정</b-button>
-          <b-button variant="info">삭제</b-button>
-          <b-button variant="info" @click="subCommentToggle">덧글 달기</b-button>
-        </div>
+    <div class="comment-list-item">
+      <div class="comment-list-item-name">
+        <div>{{name}}</div>
+        <div>{{commentObj.created_at}}</div>
       </div>
-      <template v-if="subCommentCreateToggle">
-        <CommentCreate
-          :isSubComment="true"
-          :commentId="commentObj.comment_id"
-          :reloadSubComments="reloadSubComments"
-          :subCommentToggle="subCommentToggle"
-        />
-      </template>
+      <div class="comment-list-item-context">{{commentObj.context}}</div>
+      <div class="comment-list-item-button">
+        <b-button variant="info">수정</b-button>
+        <b-button variant="info">삭제</b-button>
+        <b-button variant="info" @click="subCommentToggle">덧글 달기</b-button>
+      </div>
+    </div>
+    <template v-if="subCommentCreateToggle">
+      <CommentCreate
+        :isSubComment="true"
+        :commentId="commentObj.comment_id"
+        :reloadSubComments="reloadSubComments"
+        :subCommentToggle="subCommentToggle"
+      />
     </template>
-    <template v-else>
-      <div class="comment-list-item">
-        <div class="comment-list-item-name">
-          <div>{{name}}</div>
-          <div>{{commentObj.created_at}}</div>
-        </div>
-        <div class="comment-list-item-context">{{commentObj.context}}</div>
-        <div class="comment-list-item-button">
-          <b-button variant="info">수정</b-button>
-          <b-button variant="info">삭제</b-button>
-          <b-button variant="info" @click="subCommentToggle">덧글 달기</b-button>
-        </div>
-      </div>
-      <template v-if="subCommentCreateToggle">
-        <CommentCreate
-          :isSubComment="true"
-          :commentId="commentObj.comment_id"
-          :reloadSubComments="reloadSubComments"
-          :subCommentToggle="subCommentToggle"
-        />
-      </template>
+    <template v-if="subCommentList.length > 0">
       <div
         class="comment-list-item-subcomment-list"
         :key="item.subcomment_id"
@@ -68,7 +46,7 @@ import CommentCreate from "./CommentCreate";
 export default {
   name: "CommentListItem",
   props: {
-    commentObj: Object,
+    commentObj: Object
   },
   components: {
     CommentCreate
@@ -101,7 +79,7 @@ export default {
         user_name: data.User.filter(
           item => item.user_id === subCommentItem.user_id
         )[0].name
-      }))
+      }));
     }
   }
 };
