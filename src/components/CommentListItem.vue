@@ -78,7 +78,7 @@ export default {
         ...subCommentItem,
         user_name: data.User.filter(
           item => item.user_id === subCommentItem.user_id
-        )[0].name
+        )[0].name 
       }));
     }
   }
