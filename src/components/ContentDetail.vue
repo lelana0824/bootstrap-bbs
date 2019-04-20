@@ -27,7 +27,7 @@
         <b-button variant="success" @click="deleteData">삭제</b-button>
       </div>
       <div class="content-detail-comment">
-        덧글
+        <CommentList :contentId="contentId"/>
       </div>
     </b-card>
   </div>
@@ -35,9 +35,13 @@
 
 <script>
 import data from "@/data";
+import CommentList from "./CommentList";
 
 export default {
   name: "ContentDetail",
+  components: {
+    CommentList,
+  },
   data() {
     const contentId = Number(this.$route.params.contentId);
     const contentData = data.Content.filter(item => item.content_id === contentId)[0]
