@@ -42,6 +42,7 @@
 <script>
 import data from "@/data";
 import CommentCreate from "./CommentCreate";
+import {findSubComment} from '../service'
 
 export default {
   name: "CommentListItem",
@@ -51,19 +52,16 @@ export default {
   components: {
     CommentCreate
   },
+  async created() {
+    const ret = await findSubComment({comment_id: this.commentObj.comment_id});
+    this.subCommentList = ret.data;
+  },
   data() {
     return {
       name: data.User.filter(
         item => item.user_id === this.commentObj.user_id
       )[0].name,
-      subCommentList: data.SubComment.filter(
-        item => item.comment_id === this.commentObj.comment_id
-      ).map(subCommentItem => ({
-        ...subCommentItem,
-        user_name: data.User.filter(
-          item => item.user_id === subCommentItem.user_id
-        )[0].name
-      })),
+      subCommentList: [],
       subCommentCreateToggle: false
     };
   },
@@ -71,15 +69,9 @@ export default {
     subCommentToggle() {
       this.subCommentCreateToggle = !this.subCommentCreateToggle;
     },
-    reloadSubComments() {
-      this.subCommentList = data.SubComment.filter(
-        item => item.comment_id === this.commentObj.comment_id
-      ).map(subCommentItem => ({
-        ...subCommentItem,
-        user_name: data.User.filter(
-          item => item.user_id === subCommentItem.user_id
-        )[0].name 
-      }));
+    async reloadSubComments() {
+      const ret = await findSubComment({comment_id: this.commentObj.comment_id});
+      this.subCommentList = ret.data;
     }
   }
 };

@@ -36,30 +36,36 @@
 <script>
 import data from "@/data";
 import CommentList from "./CommentList";
+import { findContent, deleteContent } from '../service'
 
 export default {
   name: "ContentDetail",
   components: {
     CommentList,
   },
+  async created() {
+    const ret = await findContent({ content_id: Number(this.$route.params.contentId)})
+    const {data} = ret;
+    this.title = data.title;
+    this.context = data.context;
+    this.user = data.user_name;
+    this.created = data.created;
+  },
   data() {
     const contentId = Number(this.$route.params.contentId);
-    const contentData = data.Content.filter(item => item.content_id === contentId)[0]
     return {
       contentId: contentId,
-      title: contentData.title,
-      context: contentData.context,
-      user: data.User.filter(item => item.user_id === contentData.user_id)[0]
-        .name,
-      created: contentData.created_at
+      title: '',
+      context: '',
+      user: '',
+      created: ''
     };
   },
   methods: {
-    deleteData() {
-      const content_index = data.Content.findIndex(item => item.content_id === this.contentId);
-      data.Content.splice(content_index, 1)
+    async deleteData() {
+      await deleteContent({content_id: this.contentId})
       this.$router.push({
-        path: '/board/free'
+        path: `/board/free`
       })
     },
     updateData() {

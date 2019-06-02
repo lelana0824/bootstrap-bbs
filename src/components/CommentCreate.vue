@@ -16,6 +16,7 @@
 </template>
 <script>
 import data from "@/data";
+import { addComment, addSubComment } from "../service";
 
 export default {
   name: "CommentCreate",
@@ -25,7 +26,7 @@ export default {
     reloadSubComments: Function,
     subCommentToggle: Function,
     isSubComment: Boolean,
-    commentId: Number,
+    commentId: Number
   },
   data() {
     return {
@@ -34,30 +35,13 @@ export default {
     };
   },
   methods: {
-    createComment() {
-      const comment_id = data.Comment[data.Comment.length - 1].comment_id + 1;
-      data.Comment.push({
-        comment_id: comment_id,
-        user_id: 1,
-        content_id: this.contentId,
-        context: this.context,
-        created_at: "2019-04-19 14:11:11",
-        updated_at: null
-      });
+    async createComment() {
+      await addComment({ user_id: 1, content_id: this.contentId, context:this.context });
       this.reloadComments();
-      this.subCommentToggle();
       this.context = "";
     },
-    createSubComment() {
-      const subcomment_id = data.SubComment[data.SubComment.length - 1].subcomment_id + 1;
-      data.SubComment.push({
-        subcomment_id: subcomment_id,
-        comment_id: this.commentId,
-        user_id: 1,
-        context: this.context,
-        created_at: "2019-04-19 16:22:11",
-        updated_at: null
-      });
+    async createSubComment() {
+      await addSubComment({ user_id: 1, comment_id: this.commentId, context:this.context });
       this.reloadSubComments();
       this.subCommentToggle();
       this.context = "";

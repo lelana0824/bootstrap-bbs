@@ -8,9 +8,9 @@ export const addContent = ({ user_id, title, context }) => {
   });
 };
 
-export const modifyContent = ({ user_id, title, context }) => {
+export const modifyContent = ({ context_id, title, context }) => {
   return axios.post("http://127.0.0.1:3000/modify/content", {
-    user_id,
+    context_id,
     title,
     context
   });

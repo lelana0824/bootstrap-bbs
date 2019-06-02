@@ -19,21 +19,15 @@
 
 <script>
 import data from "@/data";
+import {findContentList} from '../service'
 
 export default {
   name: "Board",
+  async created() {
+    const ret = await findContentList()
+    this.items = ret.data;
+  },
   data() {
-    let items = data.Content.sort((a, b) => {
-      return b.content_id - a.content_id;
-    });
-    items = items.map(contentItem => {
-      return {
-        ...contentItem,
-        user_name: data.User.filter(
-          userItem => userItem.user_id === contentItem.user_id
-        )[0].name
-      };
-    });
     return {
       currentPage: 1,
       perPage: 10,
@@ -55,7 +49,7 @@ export default {
           label: "글쓴이"
         }
       ],
-      items: items
+      items: []
     };
   },
   computed: {
